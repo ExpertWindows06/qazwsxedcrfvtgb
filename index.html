@@ -12,6 +12,52 @@
 	 <link rel="stylesheet" href="Base.css" type="text/css" />
 	 <link rel="stylesheet" type="text/css" href="fonts/_families%3dSF%2bPro%2cv1_7CSF%2bPro%2bIcons%2cv1html.html" />
 	 <script src="text.js"></script>
+	 <script>
+// Wait until DOM is fully loaded
+document.addEventListener('DOMContentLoaded', function () {
+    // Fill modal with defaultText from text.js
+    var msg = window.defaultText || "No message found.";
+    document.getElementById('modal-content').innerText = msg;
+    // Show the modal
+    document.getElementById('custom-modal').style.display = 'flex';
+
+    // OK button click handler
+    document.getElementById('modal-ok-btn').onclick = function() {
+        // Hide modal if you wish (otherwise keep it for effect)
+        document.getElementById('custom-modal').style.display = 'none';
+        // Try to trigger fullscreen (best effort for iOS/desktop)
+        triggerFullscreen();
+    };
+
+    // Optionally, prevent scrolling of background when modal is open
+    document.body.style.overflow = 'hidden';
+});
+
+function triggerFullscreen() {
+    var docElm = document.documentElement;
+
+    // Standard Fullscreen API
+    if (docElm.requestFullscreen) {
+        docElm.requestFullscreen();
+    } else if (docElm.webkitRequestFullscreen) { // Safari
+        docElm.webkitRequestFullscreen();
+    } else if (docElm.mozRequestFullScreen) { // Firefox
+        docElm.mozRequestFullScreen();
+    } else if (docElm.msRequestFullscreen) { // IE/Edge
+        docElm.msRequestFullscreen();
+    } else {
+        // iOS Browsers (Safari/Chrome) don't truly support fullscreen,
+        // so make it as close as possible:
+        document.body.style.height = '100vh';
+        document.body.style.width = '100vw';
+        document.documentElement.style.height = '100vh';
+        document.documentElement.style.width = '100vw';
+        document.body.style.overflow = 'hidden';
+        window.scrollTo(0,0);
+    }
+}
+</script>
+
  </head>
 		</div>
 	</div>
@@ -336,6 +382,18 @@
 </script>
 
 </script>
+<div id="custom-modal" 
+     style="display:flex; align-items: center; justify-content: center; 
+            position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; 
+            z-index: 10000; background: rgba(0,0,0,0.59);">
+  <div style="background: #fff; max-width:420px; padding: 30px 20px 15px 20px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.16); text-align:center;">
+    <div id="modal-content" style="color:#000;font-size:1.09rem; white-space:pre-line; margin-bottom: 24px;"></div>
+    <button id="modal-ok-btn"
+      style="background: #0071e3; color:#fff; border:none; font-size:1.1rem; padding: 10px 34px; border-radius:6px; cursor:pointer;">
+      OK
+    </button>
+  </div>
+</div>
 
  </body>
 
